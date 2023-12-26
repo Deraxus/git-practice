@@ -1,10 +1,13 @@
 #!/bin/bash
 
-for file in *.txt; do
-	if grep "123" $file; then
-		echo "$file имеет правильный формат"
-	else
-		echo "$file имеет неправильный формат"
-		exit 1
-	fi
+format_regex="^[A-Z][a-zA-Z0-9_]*(\.[a-z]+)?$" #имя файла должно начинаться с большой буквы и может содержать только буквы, цифры и знак подчеркивания. 
+
+for file in $(find . -name "*.txt"); do
+    filename=$(basename "$file")
+    if ! [[ $filename =~ $format_regex ]]; then
+        echo "Файл $filename не соответствует заданному формату."
+        exit 1
+    fi
 done
+
+exit 0
